@@ -1,0 +1,6 @@
+{
+  "name": "Climograph Guesser",
+  "description": "A game where users guess a city based on its climograph data. Features two modes: pinning a location on a map or selecting from multiple choices.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
