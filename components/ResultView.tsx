@@ -172,6 +172,17 @@ const ResultView: React.FC<ResultViewProps> = ({
          <div className="h-60 md:h-80 w-full border border-gray-300 rounded-lg overflow-hidden my-4">
             <MapDisplay center={mapCenter} zoom={mapZoom} pins={mapPins} />
           </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div>
+              <h3 className="text-xl font-semibold text-center text-gray-700 mb-2">Correct City's Climograph</h3>
+              <Climograph data={targetChartData} />
+            </div>
+         <div>
+                <h3 className="text-xl font-semibold text-center text-gray-700 mb-2">
+                  {(gameMode === GameMode.PIN || gameMode === GameMode.CHALLENGE) ? "Your Pinned Location's Climograph" : "Your Chosen City's Climograph"}
+                </h3>
+                <Climograph data={userChartData} />
+              </div>
       )}
 
 
