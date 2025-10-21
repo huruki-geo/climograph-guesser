@@ -370,6 +370,68 @@ export const CITIES: City[] = [
   { name: 'Tarawa', country: 'Kiribati', latitude: 1.4428, longitude: 172.9262 }, // キリバス
   { name: 'Palau (Ngerulmud)', country: 'Palau', latitude: 7.5000, longitude: 134.6250 }, // パラオの首都（行政の中心地）
   { name: 'Saipan', country: 'USA', latitude: 15.1904, longitude: 145.7610 }, // 北マリアナ諸島
+    // --- インドネシア (Indonesia) ---
+  { name: 'Medan', country: 'Indonesia', latitude: 3.5700, longitude: 98.6800 },
+  { name: 'Palembang', country: 'Indonesia', latitude: -2.9900, longitude: 104.7600 },
+  { name: 'Makassar', country: 'Indonesia', latitude: -5.1300, longitude: 119.4200 },
+
+  // --- 南アフリカ (South Africa) ---
+  { name: 'Johannesburg', country: 'South Africa', latitude: -26.1500, longitude: 28.2300 },
+  { name: 'Pretoria', country: 'South Africa', latitude: -25.7400, longitude: 28.1800 },
+  { name: 'Bloemfontein', country: 'South Africa', latitude: -29.1000, longitude: 26.3000 },
+
+  // --- パキスタン (Pakistan) ---
+  { name: 'Islamabad', country: 'Pakistan', latitude: 33.7380, longitude: 73.0845 },
+  { name: 'Quetta', country: 'Pakistan', latitude: 30.1958, longitude: 67.0172 },
+  { name: 'Gilgit', country: 'Pakistan', latitude: 35.9208, longitude: 74.3083 },
+
+  // --- コンゴ民主共和国 (DR Congo) ---
+  { name: 'Lubumbashi', country: 'DR Congo', latitude: -11.6700, longitude: 27.4700 },
+  { name: 'Goma', country: 'DR Congo', latitude: -1.6794, longitude: 29.2336 },
+  { name: 'Kisangani', country: 'DR Congo', latitude: 0.5167, longitude: 25.2000 },
+
+  // --- イラン (Iran) ---
+  { name: 'Tehran', country: 'Iran', latitude: 35.6961, longitude: 51.4231 },
+  { name: 'Bandar Abbas', country: 'Iran', latitude: 27.2167, longitude: 56.3667 },
+  { name: 'Rasht', country: 'Iran', latitude: 37.2744, longitude: 49.5889 },
+
+  // --- 日本 (Japan) ---
+  { name: 'Kanazawa', country: 'Japan', latitude: 36.5611, longitude: 136.6565 },
+  { name: 'Niigata', country: 'Japan', latitude: 37.9161, longitude: 139.0364 },
+  { name: 'Kagoshima', country: 'Japan', latitude: 31.5966, longitude: 130.5571 },
+  { name: 'Naha', country: 'Japan', latitude: 26.2123, longitude: 127.6792 },
+  { name: 'Asahikawa', country: 'Japan', latitude: 43.7600, longitude: 142.3700 },
+  { name: 'Kochi', country: 'Japan', latitude: 33.5589, longitude: 133.5314 },
+  { name: 'Hiroshima', country: 'Japan', latitude: 34.4000, longitude: 132.4700 },
+  { name: 'Okayama', country: 'Japan', latitude: 34.6500, longitude: 133.9167 },
+  { name: 'Nagano', country: 'Japan', latitude: 36.6600, longitude: 138.1900 },
+  { name: 'Aomori', country: 'Japan', latitude: 40.8200, longitude: 140.7700 },
+
+  // --- アメリカ合衆国 (USA) ---
+  { name: 'Chicago', country: 'USA', latitude: 41.8680, longitude: -87.6650 },
+  { name: 'Los Angeles', country: 'USA', latitude: 34.0500, longitude: -118.2500 },
+  { name: 'Miami', country: 'USA', latitude: 25.7752, longitude: -80.2086 },
+  { name: 'Seattle', country: 'USA', latitude: 47.6100, longitude: -122.3300 },
+  { name: 'Denver', country: 'USA', latitude: 39.7449, longitude: -104.9645 },
+  { name: 'Phoenix', country: 'USA', latitude: 33.4300, longitude: -112.0200 },
+  { name: 'Atlanta', country: 'USA', latitude: 33.7920, longitude: -84.3360 },
+  { name: 'Boston', country: 'USA', latitude: 42.3736, longitude: -71.0861 },
+  { name: 'New Orleans', country: 'USA', latitude: 29.9819, longitude: -90.0963 },
+  { name: 'Minneapolis', country: 'USA', latitude: 44.9820, longitude: -93.2560 },
+
+  // --- カナダ (Canada) ---
+  { name: 'Calgary', country: 'Canada', latitude: 51.0478, longitude: -114.0690 },
+  { name: 'Edmonton', country: 'Canada', latitude: 53.5250, longitude: -113.5150 },
+  { name: 'Winnipeg', country: 'Canada', latitude: 49.8954, longitude: -97.1385 },
+  { name:　'Ottawa', country: 'Canada', latitude: 45.4100, longitude: -75.7100 },
+  { name: 'Halifax', country: 'Canada', latitude: 44.6500, longitude: -63.6000 },
+
+  // --- オーストラリア (Australia) ---
+  { name: 'Melbourne', country: 'Australia', latitude: -37.8136, longitude: 144.9631 },
+  { name: 'Brisbane', country: 'Australia', latitude: -27.5000, longitude: 153.0000 },
+  { name: 'Darwin', country: 'Australia', latitude: -12.4643, longitude: 130.8459 },
+  { name: 'Alice Springs', country: 'Australia', latitude: -23.6994, longitude: 133.8800 },
+  { name: 'Canberra', country: 'Australia', latitude: -35.3081, longitude: 149.1244 },
   { name: 'Hagåtña', country: 'Guam', latitude: 13.4731, longitude: 144.7497 } // グアム
 ];
 
