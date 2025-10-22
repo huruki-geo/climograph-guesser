@@ -432,6 +432,16 @@ export const CITIES: City[] = [
   { name: 'Darwin', country: 'Australia', latitude: -12.4643, longitude: 130.8459 },
   { name: 'Alice Springs', country: 'Australia', latitude: -23.6994, longitude: 133.8800 },
   { name: 'Canberra', country: 'Australia', latitude: -35.3081, longitude: 149.1244 },
+  { name: 'McMurdo Station', country: 'Antarctica', latitude: -77.8463, longitude: 166.6683 },
+  { name: 'Portland', country: 'USA', latitude: 45.5152, longitude: -122.6784 },
+{ name: 'Austin', country: 'USA', latitude: 30.2672, longitude: -97.7431 },
+{ name: 'Anchorage', country: 'USA', latitude: 61.2181, longitude: -149.9003 },
+{ name: 'New Orleans', country: 'USA', latitude: 29.9511, longitude: -90.0715 },
+{ name: 'Ottawa', country: 'Canada', latitude: 45.4215, longitude: -75.6972 },
+{ name: 'Quebec City', country: 'Canada', latitude: 46.8139, longitude: -71.2082 },
+{ name: 'Halifax', country: 'Canada', latitude: 44.6488, longitude: -63.5752 },
+{ name: 'Winnipeg', country: 'Canada', latitude: 49.8951, longitude: -97.1384 },
+  { name: 'Edinburgh of the Seven Seas', country: 'Tristan da Cunha', latitude: -37.0675, longitude: -12.3116 },
   { name: 'Hagåtña', country: 'Guam', latitude: 13.4731, longitude: 144.7497 } // グアム
 ];
 
