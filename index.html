@@ -37,5 +37,41 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+    <section id="about" style="padding:2.5rem 1rem; background:#fafafa; border-top:1px solid #eee; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'メイリオ', sans-serif; color:#222;">
+  <div style="max-width:880px; margin:0 auto;">
+    <h2 style="margin:0 0 0.5rem; font-size:1.25rem;">このアプリについて</h2>
+
+    <p style="margin:0 0 1rem; line-height:1.7;">
+      Weather and Temperature Chart Quiz" is a simple geography quiz that visualizes climate data (temperature and precipitation) for random locations around the world and asks you to guess where that location is. It is a free browser game aimed at learning and cultivating a sense of climate.
+    </p>
+
+    <h3 style="margin:0 0 0.5rem; font-size:1rem;">使っている技術・データ</h3>
+    <ul style="margin:0 0 1rem 1.25rem; line-height:1.7;">
+      <li><strong>Maps：</strong>It is drawn using Leaflet, and the map tiles are derived from OpenStreetMap (OSM).</li>
+      <li><strong>Climo Data（Climographs）：</strong>We use the Open-Meteo API to obtain and graph temperature and precipitation data in real time.</li>
+    </ul>
+
+    <h3 style="margin:0 0 0.5rem; font-size:1rem;">About Privacy</h3>
+    <p style="margin:0 0 1rem; line-height:1.7;">
+      We do not collect location information or use user accounts. There are no functions to save game play history or personal information (rankings or login).
+    </p>
+
+   <h3 style="margin:0 0 0.5rem; font-size:1rem;">Notes</h3>
+<ul style="margin:0 0 1rem 1.25rem; line-height:1.7;">
+<li>Open-Meteo data may be missing for some locations. In such cases, we will switch to another location.</li>
+<li>In the event of heavy traffic, maps may not be displayed due to limitations on the map tile provider (in which case we plan to switch tile providers).</li>
+</ul>
+
+    <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+      <small style="display:block; color:#666; font-size:0.85rem; line-height:1.4;">
+        Map Tiles：<a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">© OpenStreetMap contributors</a>
+      </small>
+      <small style="display:block; color:#666; font-size:0.85rem; line-height:1.4;">
+        Climo Data：<a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">Open-Meteo</a>
+      </small>
+    </div>
+    </p>
+  </div>
+</section>
   </body>
 </html>
