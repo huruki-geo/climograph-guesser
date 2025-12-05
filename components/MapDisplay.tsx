@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet'; // Import Leaflet
+import "leaflet/dist/leaflet.css";
 
 export interface MapPin {
   latitude: number;
