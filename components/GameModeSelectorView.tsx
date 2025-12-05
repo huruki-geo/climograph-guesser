@@ -43,6 +43,7 @@ const GameModeSelectorView: React.FC<GameModeSelectorViewProps> = ({ onSelectMod
         Guess the city based on its climate data and dive into a fun, interactive climate-geography challenge. Explore real-world temperature and precipitation patterns, test your knowledge of global climates, and see how well you recognize weather trends from cities around the world. Whether you love geography quizzes, climate science, or travel trivia, this climate-graph guessing game lets you sharpen your skills while discovering the unique environmental signatures of different regions. Choose your challenge level and start identifying cities from their climate data today.
         Test your knowledge of world climates!
       </p>
+      <a href='https://climo.statplay.site/about'>About</a>
     </div>
   );
 };
