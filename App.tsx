@@ -12,6 +12,7 @@ import QuizView from './components/QuizView';
 import ResultView from './components/ResultView';
 import ChallengeSummaryView from './components/ChallengeSummaryView'; // New component
 import Button from './components/Button';
+import "./index.css";
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.SELECT_MODE);
