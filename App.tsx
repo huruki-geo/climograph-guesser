@@ -247,9 +247,10 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-sky-100 flex flex-col items-center justify-center p-4 selection:bg-sky-200">
       <header className="w-full max-w-5xl mx-auto mb-8 text-center">
+        <a href="https://climo.statplay.site/">
         <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 py-2">
           🌍 Climograph Guesser 🤔
-        </h1>
+        </h1></a>
       </header>
       <main className="w-full max-w-5xl mx-auto">
         {renderContent()}
