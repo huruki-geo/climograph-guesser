@@ -61,8 +61,8 @@ const ChallengeSummaryView: React.FC<ChallengeSummaryViewProps> = ({ results, to
     setCopyStatusMessage(''); // Reset message
     const shareText = `🌍 I scored ${totalScore} out of ${maxPossibleScore} in the Climograph Guesser 5-Question Challenge! My rank was “${rank.name} ${rank.emoji}”. Try it yourself! #ClimographGuesser`;
     
-    let shareUrl = window.location.href;
-    console.log('Attempting to share URL:', shareUrl);
+    let shareUrl = 'https://climo.statplay.site/';
+    console.log('Attempting to share URL:', 'https://climo.statplay.site/');
 
     const shareData: ShareData = {
       title: 'Climograph Guesser Challenge Result',
