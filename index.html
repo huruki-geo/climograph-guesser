@@ -3,43 +3,207 @@
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y6RDMT8S24"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y6RDMT8S24"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-Y6RDMT8S24');
-</script>
+      gtag('config', 'G-Y6RDMT8S24');
+    </script>
     <meta name="google-site-verification" content="9AzWws44YaJ90cJTOwmd3PBpIPSBKu0dKGxe9SO9hL4" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="https://climo.statplay.site/favicon.png">
-    <title>Climograph Guesser  | Geography quiz to protect the world's climate</title>
+    <title>Climograph Guesser | Geography quiz to protect the world's climate</title>
     <meta property="og:title" content="Climograph Guesser">
     <meta property="og:description" content="A geography quiz where you are shown a random rain and temperature chart from around the world!">
     <meta property="og:image" content="https://climo.statplay.site/ogp.png">
     <meta property="og:type" content="website">
     <meta name="description" content="A geography quiz where you are shown a random rain and temperature chart from around the world and have to guess which region's climate it corresponds to. A free game that is also great for learning geography.">
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.1.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
-    "react/": "https://esm.sh/react@^19.1.0/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.4.0",
-    "recharts": "https://esm.sh/recharts@^2.15.3"
-  }
-}
-</script>
-</head>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@^19.1.0",
+        "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+        "react/": "https://esm.sh/react@^19.1.0/",
+        "@google/genai": "https://esm.sh/@google/genai@^1.4.0",
+        "recharts": "https://esm.sh/recharts@^2.15.3"
+      }
+    }
+    </script>
+
+    <!-- Styles for the new section and layout stability -->
+    <style>
+      :root {
+        --bg-color: #f8f9fa;
+        --text-color: #333;
+        --accent-color: #2c3e50;
+        --bar-color: #3498db;
+        --line-color: #e74c3c;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      /* Prevent CLS: Ensure root takes up full height before React loads */
+      #root {
+        min-height: 100vh; 
+        display: block;
+      }
+
+      /* Styles for the explanation section */
+      .info-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 4rem 20px;
+        background-color: #ffffff;
+        border-top: 1px solid #e1e4e8;
+      }
+
+      .info-section h2 {
+        font-size: 2rem;
+        color: var(--accent-color);
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 0.5rem;
+      }
+
+      .info-section h3 {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-top: 2rem;
+      }
+
+      .info-section p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        color: #444;
+      }
+
+      .info-visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 3rem 0;
+      }
+
+      .diagram-caption {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+        font-style: italic;
+        text-align: center;
+      }
+
+      /* Responsive SVG container to prevent shift */
+      .svg-container {
+        width: 100%;
+        max-width: 600px;
+        aspect-ratio: 16 / 9;
+        background-color: #fcfcfc;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    
     <div class="sr-only">
       <h1>Climograph Guesser</h1>
       <p>Guess the city based on its climate data. Choose your challenge:</p>
     </div>
+    
     <div id="root"></div>
+
+    <!-- NEW SECTION: What is a Climograph? -->
+    <section class="info-section">
+      <h2>What is a Climograph?</h2>
+      <p>
+        A <strong>climograph</strong> (also known as a climatic diagram) is a single graphical chart that displays the basic climate of a specific location. It serves as a powerful tool for geographers, meteorologists, and students to visualize the long-term weather patterns of a region, specifically focusing on two key variables: <strong>temperature</strong> and <strong>precipitation</strong>.
+      </p>
+      <p>
+        Unlike a standard weather forecast that tells you what will happen tomorrow, a climograph represents averages usually collected over a period of 30 years. This data helps define the "climate personality" of a city, determining whether it belongs to a tropical rainforest, a desert, or a tundra biome.
+      </p>
+
+      <div class="info-visual">
+        <!-- SVG Diagram directly embedded to prevent layout shift and save HTTP requests -->
+        <div class="svg-container">
+            <svg viewBox="0 0 600 337" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background Grid -->
+                <rect x="50" y="20" width="500" height="250" fill="none" stroke="#eee" stroke-width="1"/>
+                <line x1="50" y1="82.5" x2="550" y2="82.5" stroke="#eee" />
+                <line x1="50" y1="145" x2="550" y2="145" stroke="#eee" />
+                <line x1="50" y1="207.5" x2="550" y2="207.5" stroke="#eee" />
+                
+                <!-- Bars (Precipitation) -->
+                <g fill="#3498db" opacity="0.7">
+                    <rect x="65" y="100" width="20" height="170" />
+                    <rect x="105" y="120" width="20" height="150" />
+                    <rect x="145" y="180" width="20" height="90" />
+                    <rect x="185" y="220" width="20" height="50" />
+                    <rect x="225" y="240" width="20" height="30" />
+                    <rect x="265" y="250" width="20" height="20" />
+                    <rect x="305" y="250" width="20" height="20" />
+                    <rect x="345" y="240" width="20" height="30" />
+                    <rect x="385" y="220" width="20" height="50" />
+                    <rect x="425" y="180" width="20" height="90" />
+                    <rect x="465" y="120" width="20" height="150" />
+                    <rect x="505" y="90" width="20" height="180" />
+                </g>
+
+                <!-- Line (Temperature) -->
+                <polyline points="75,220 115,200 155,160 195,100 235,50 275,30 315,30 355,50 395,100 435,160 475,200 515,220" 
+                          fill="none" stroke="#e74c3c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="75" cy="220" r="4" fill="#e74c3c"/>
+                <circle cx="275" cy="30" r="4" fill="#e74c3c"/>
+                <circle cx="515" cy="220" r="4" fill="#e74c3c"/>
+
+                <!-- Axes Labels -->
+                <text x="25" y="145" font-family="sans-serif" font-size="12" fill="#3498db" text-anchor="middle" transform="rotate(-90, 25, 145)">Precipitation (mm)</text>
+                <text x="575" y="145" font-family="sans-serif" font-size="12" fill="#e74c3c" text-anchor="middle" transform="rotate(90, 575, 145)">Temperature (°C)</text>
+                
+                <!-- Month Labels -->
+                <g font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">
+                    <text x="75" y="290">J</text><text x="115" y="290">F</text><text x="155" y="290">M</text>
+                    <text x="195" y="290">A</text><text x="235" y="290">M</text><text x="275" y="290">J</text>
+                    <text x="315" y="290">J</text><text x="355" y="290">A</text><text x="395" y="290">S</text>
+                    <text x="435" y="290">O</text><text x="475" y="290">N</text><text x="515" y="290">D</text>
+                </g>
+            </svg>
+        </div>
+        <p class="diagram-caption">An example of a Mediterranean climate: Wet winters (blue bars) and dry, hot summers (red line).</p>
+      </div>
+
+      <h3>How to Read a Climograph</h3>
+      <p>
+        Reading these charts requires looking at three distinct axes simultaneously. Here is the breakdown of the visual components:
+      </p>
+      <ul>
+        <li><strong>The Bottom Axis (X-Axis):</strong> This represents the 12 months of the year, usually starting with January on the left and ending with December on the right. This allows you to track seasonal changes.</li>
+        <li><strong>The Bar Graph (Blue):</strong> The vertical bars represent the average monthly <strong>precipitation</strong> (rainfall or snowfall). You read the height of these bars against the axis on one side (often the left), usually measured in millimeters (mm) or inches.</li>
+        <li><strong>The Line Graph (Red):</strong> The continuous line hovering over the bars represents the average monthly <strong>temperature</strong>. You read the points on this line against the axis on the opposite side, measured in degrees Celsius (°C) or Fahrenheit (°F).</li>
+      </ul>
+
+      <h3>Why Are They Important?</h3>
+      <p>
+        Climographs are essential for understanding the relationship between climate and human activity. For <strong>agriculture</strong>, knowing the "growing season" (the warm months) and the "wet season" is vital for planting crops. Farmers in a Monsoon climate, for example, rely on the heavy rains shown on the chart during summer months.
+      </p>
+      <p>
+        They are also crucial for determining <strong>Global Climate Classification</strong>. The shape of the line and bars allows scientists to categorize a region using the Köppen system. A straight, flat temperature line typically indicates a tropical location near the equator, while a steep curve (like a bell shape) suggests a location in the Northern Hemisphere with hot summers and cold winters. Conversely, a "U-shaped" temperature line indicates a location in the Southern Hemisphere, where June and July are the coldest months of the year.
+      </p>
+      <p>
+        By mastering the climograph, you aren't just looking at data; you are visualizing the rhythm of life in different corners of the Earth.
+      </p>
+    </section>
+
     <script type="module" src="/index.tsx" strategy="lazyOnload"></script>
   </body>
 </html>
