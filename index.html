@@ -115,25 +115,22 @@
 
     <!-- NEW SECTION: What is a Climograph? -->
     <section class="info-section">
-      <h2>What is a Climograph?</h2>
-      <p>
+    <h2>What is a Climograph?</h2>
+    <p>
         A <strong>climograph</strong> (also known as a climatic diagram) is a single graphical chart that displays the basic climate of a specific location. It serves as a powerful tool for geographers, meteorologists, and students to visualize the long-term weather patterns of a region, specifically focusing on two key variables: <strong>temperature</strong> and <strong>precipitation</strong>.
-      </p>
-      <p>
+    </p>
+    <p>
         Unlike a standard weather forecast that tells you what will happen tomorrow, a climograph represents averages usually collected over a period of 30 years. This data helps define the "climate personality" of a city, determining whether it belongs to a tropical rainforest, a desert, or a tundra biome.
-      </p>
+    </p>
 
-      <div class="info-visual">
-        <!-- SVG Diagram directly embedded to prevent layout shift and save HTTP requests -->
+    <div class="info-visual">
         <div class="svg-container">
             <svg viewBox="0 0 600 337" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <!-- Background Grid -->
                 <rect x="50" y="20" width="500" height="250" fill="none" stroke="#eee" stroke-width="1"/>
                 <line x1="50" y1="82.5" x2="550" y2="82.5" stroke="#eee" />
                 <line x1="50" y1="145" x2="550" y2="145" stroke="#eee" />
                 <line x1="50" y1="207.5" x2="550" y2="207.5" stroke="#eee" />
                 
-                <!-- Bars (Precipitation) -->
                 <g fill="#3498db" opacity="0.7">
                     <rect x="65" y="100" width="20" height="170" />
                     <rect x="105" y="120" width="20" height="150" />
@@ -149,18 +146,15 @@
                     <rect x="505" y="90" width="20" height="180" />
                 </g>
 
-                <!-- Line (Temperature) -->
                 <polyline points="75,220 115,200 155,160 195,100 235,50 275,30 315,30 355,50 395,100 435,160 475,200 515,220" 
-                          fill="none" stroke="#e74c3c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            fill="none" stroke="#e74c3c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="75" cy="220" r="4" fill="#e74c3c"/>
                 <circle cx="275" cy="30" r="4" fill="#e74c3c"/>
                 <circle cx="515" cy="220" r="4" fill="#e74c3c"/>
 
-                <!-- Axes Labels -->
                 <text x="25" y="145" font-family="sans-serif" font-size="12" fill="#3498db" text-anchor="middle" transform="rotate(-90, 25, 145)">Precipitation (mm)</text>
                 <text x="575" y="145" font-family="sans-serif" font-size="12" fill="#e74c3c" text-anchor="middle" transform="rotate(90, 575, 145)">Temperature (°C)</text>
                 
-                <!-- Month Labels -->
                 <g font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">
                     <text x="75" y="290">J</text><text x="115" y="290">F</text><text x="155" y="290">M</text>
                     <text x="195" y="290">A</text><text x="235" y="290">M</text><text x="275" y="290">J</text>
@@ -170,29 +164,98 @@
             </svg>
         </div>
         <p class="diagram-caption">An example of a Mediterranean climate: Wet winters (blue bars) and dry, hot summers (red line).</p>
-      </div>
+    </div>
 
-      <h3>How to Read a Climograph</h3>
-      <p>
+    <h3>How to Read a Climograph</h3>
+    <p>
         Reading these charts requires looking at three distinct axes simultaneously. Here is the breakdown of the visual components:
-      </p>
-      <ul>
+    </p>
+    <ul>
         <li><strong>The Bottom Axis (X-Axis):</strong> This represents the 12 months of the year, usually starting with January on the left and ending with December on the right. This allows you to track seasonal changes.</li>
         <li><strong>The Bar Graph (Blue):</strong> The vertical bars represent the average monthly <strong>precipitation</strong> (rainfall or snowfall). You read the height of these bars against the axis on one side (often the left), usually measured in millimeters (mm) or inches.</li>
         <li><strong>The Line Graph (Red):</strong> The continuous line hovering over the bars represents the average monthly <strong>temperature</strong>. You read the points on this line against the axis on the opposite side, measured in degrees Celsius (°C) or Fahrenheit (°F).</li>
-      </ul>
+    </ul>
 
-      <h3>Why Are They Important?</h3>
-      <p>
+    <h3>Why Are They Important?</h3>
+    <p>
         Climographs are essential for understanding the relationship between climate and human activity. For <strong>agriculture</strong>, knowing the "growing season" (the warm months) and the "wet season" is vital for planting crops. Farmers in a Monsoon climate, for example, rely on the heavy rains shown on the chart during summer months.
-      </p>
-      <p>
+    </p>
+    <p>
         They are also crucial for determining <strong>Global Climate Classification</strong>. The shape of the line and bars allows scientists to categorize a region using the Köppen system. A straight, flat temperature line typically indicates a tropical location near the equator, while a steep curve (like a bell shape) suggests a location in the Northern Hemisphere with hot summers and cold winters. Conversely, a "U-shaped" temperature line indicates a location in the Southern Hemisphere, where June and July are the coldest months of the year.
-      </p>
-      <p>
+    </p>
+    <p>
         By mastering the climograph, you aren't just looking at data; you are visualizing the rhythm of life in different corners of the Earth.
-      </p>
-    </section>
+    </p>
+</section>
+
+<section class="info-section">
+    <h2>🗺️ What's Climograph Guesser?</h2>
+    <p>
+        <strong>Climograph Guesser</strong> is a unique educational and competitive tool designed to test your climate analysis skills. It challenges you to interpret a presented climograph and accurately pinpoint its location on a world map.
+    </p>
+    <p>
+        Unlike a simple guessing game, scoring is based on a **rigorous quantitative method**. This makes it highly suitable for competitive play, use in classrooms, or for deepening personal understanding of global climate patterns.
+    </p>
+
+    <h3>🎯 How the Game Works</h3>
+    <ul>
+        <li><strong>Goal:</strong> To place a pin on the world map at the location whose actual climate best matches the presented climograph.</li>
+        <li><strong>Scoring:</strong> Your score is calculated based on the **similarity** between the climate data of the location you pin and the data shown in the target climograph.</li>
+    </ul>
+    
+
+    <h3>The Scoring Mechanism (Quantitative Approach)</h3>
+    <p>
+        The Climograph Guesser system uses advanced similarity calculations to objectively determine which two locations on Earth have the closest climate. The system treats the two key climate variables as **12-dimensional vectors**.
+    </p>
+
+    <h4>1. Climate Data Vectorization</h4>
+    <p>
+        The monthly average data for 12 months is represented by two distinct vectors:
+    </p>
+    <ul>
+        <li><strong>Temperature Vector</strong> $\vec{T}$: The average temperature data for each month (Jan-Dec).
+            $$\vec{T} = (T_{Jan}, T_{Feb}, T_{Mar}, \dots, T_{Dec})$$</li>
+        <li><strong>Precipitation Vector</strong> $\vec{P}$: The average precipitation data for each month (Jan-Dec).
+            $$\vec{P} = (P_{Jan}, P_{Feb}, P_{Mar}, \dots, P_{Dec})$$</li>
+    </ul>
+
+    <h4>2. Similarity Calculation (Cosine Similarity)</h4>
+    <p>
+        We use **Cosine Similarity** $S(\vec{A}, \vec{B})$ to determine how closely the climate data pattern of the location you pin ($A$) aligns with the pattern of the target climograph ($B$). This measure is robust because it focuses on the *pattern* rather than the magnitude.
+    </p>
+    $$S(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\vec{A}\| \|\vec{B}\|}$$
+    <p>
+        This calculation is performed independently for both the temperature and precipitation vectors. This method is exceptionally superior from a metrological perspective because it correctly handles regions with very low precipitation, such as **deserts**, where a slight measurement error could lead to a large absolute difference. Cosine similarity ensures the "pattern" (e.g., near-zero precipitation all year) is accurately assessed.
+    </p>
+    <p>
+        The final score is a weighted integration of these temperature and precipitation similarities, normalized to a maximum of 100 points.
+    </p>
+
+    <h3>Importance and Applications</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Application</th>
+                <th>Benefit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Competitive Play</strong></td>
+                <td>Allows friends or students to compete to see who can most accurately interpret and place global climate patterns.</td>
+            </tr>
+            <tr>
+                <td><strong>Classroom Use</strong></td>
+                <td>Helps students in geography and climatology courses visually and practically grasp global **Köppen Climate Classification**.</td>
+            </tr>
+            <tr>
+                <td><strong>Data Analysis Skill Development</strong></td>
+                <td>Fosters the ability to simultaneously read and synthesize patterns from two different graphs (temperature and precipitation).</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
 
     <script type="module" src="/index.tsx" strategy="lazyOnload"></script>
   </body>
