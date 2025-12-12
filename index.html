@@ -210,24 +210,24 @@
 </section>
 
 <section class="info-section">
-    <h2>🗺️ What's Climograph Guesser?</h2>
+    <h2>What's Climograph Guesser?</h2>
     <p>
         <strong>Climograph Guesser</strong> is a unique educational and competitive tool designed to test your climate analysis skills. It challenges you to interpret a presented climograph and accurately pinpoint its location on a world map.
     </p>
     <p>
-        Unlike a simple guessing game, scoring is based on a **rigorous quantitative method**. This makes it highly suitable for competitive play, use in classrooms, or for deepening personal understanding of global climate patterns.
+        Unlike a simple guessing game, scoring is based on a rigorous quantitative method. This makes it highly suitable for competitive play, use in classrooms, or for deepening personal understanding of global climate patterns.
     </p>
 
-    <h3>🎯 How the Game Works</h3>
+    <h3>How the Game Works</h3>
     <ul>
         <li><strong>Goal:</strong> To place a pin on the world map at the location whose actual climate best matches the presented climograph.</li>
-        <li><strong>Scoring:</strong> Your score is calculated based on the **similarity** between the climate data of the location you pin and the data shown in the target climograph.</li>
+        <li><strong>Scoring:</strong> Your score is calculated based on the similarity between the climate data of the location you pin and the data shown in the target climograph.</li>
     </ul>
     
 
     <h3>The Scoring Mechanism (Quantitative Approach)</h3>
     <p>
-        The Climograph Guesser system uses advanced similarity calculations to objectively determine which two locations on Earth have the closest climate. The system treats the two key climate variables as **12-dimensional vectors**.
+        The Climograph Guesser system uses advanced similarity calculations to objectively determine which two locations on Earth have the closest climate. The system treats the two key climate variables as 12-dimensional vectors.
     </p>
 
     <h4>1. Climate Data Vectorization</h4>
@@ -243,11 +243,11 @@
 
     <h4>2. Similarity Calculation (Cosine Similarity)</h4>
     <p>
-        We use **Cosine Similarity** $S(\vec{A}, \vec{B})$ to determine how closely the climate data pattern of the location you pin ($A$) aligns with the pattern of the target climograph ($B$). This measure is robust because it focuses on the *pattern* rather than the magnitude.
+        We use Cosine Similarity $S(\vec{A}, \vec{B})$ to determine how closely the climate data pattern of the location you pin ($A$) aligns with the pattern of the target climograph ($B$). This measure is robust because it focuses on the pattern rather than the magnitude.
     </p>
     $$S(\vec{A}, \vec{B}) = \frac{\vec{A} \cdot \vec{B}}{\|\vec{A}\| \|\vec{B}\|}$$
     <p>
-        This calculation is performed independently for both the temperature and precipitation vectors. This method is exceptionally superior from a metrological perspective because it correctly handles regions with very low precipitation, such as **deserts**, where a slight measurement error could lead to a large absolute difference. Cosine similarity ensures the "pattern" (e.g., near-zero precipitation all year) is accurately assessed.
+        This calculation is performed independently for both the temperature and precipitation vectors. This method is exceptionally superior from a metrological perspective because it correctly handles regions with very low precipitation, such as deserts, where a slight measurement error could lead to a large absolute difference. Cosine similarity ensures the "pattern" (e.g., near-zero precipitation all year) is accurately assessed.
     </p>
     <p>
         The final score is a weighted integration of these temperature and precipitation similarities, normalized to a maximum of 100 points.
@@ -268,7 +268,7 @@
             </tr>
             <tr>
                 <td><strong>Classroom Use</strong></td>
-                <td>Helps students in geography and climatology courses visually and practically grasp global **Köppen Climate Classification**.</td>
+                <td>Helps students in geography and climatology courses visually and practically grasp global Köppen Climate Classification.</td>
             </tr>
             <tr>
                 <td><strong>Data Analysis Skill Development</strong></td>
