@@ -1,12 +1,31 @@
 
 import { City } from '../types';
-import { CITIES } from '../constants';
 import { shuffleArray } from '../utils/helpers';
 
-export function getRandomCity(
+// データをメモリにキャッシュするための変数
+let citiesCache: City[] | null = null;
+
+// 内部ヘルパー: データを必要になった瞬間にロードする
+const loadCities = async (): Promise<City[]> => {
+  if (citiesCache) {
+    return citiesCache;
+  }
+  
+  // 重いデータファイル (cityData.ts) を動的にインポート
+  // constants.ts ではなく、専用のデータファイルから読み込みます
+  const module = await import('./cityData'); 
+  citiesCache = module.CITIES;
+  return citiesCache;
+};
+
+export async function getRandomCity(
   excludeSameAsLastQuestion?: City, 
   excludeCurrentAttempts: City[] = []
-): City | null {
+): Promise<City | null> { // 返り値が Promise になります
+  
+  // ★ここでデータを待機
+  const CITIES = await loadCities();
+
   if (CITIES.length === 0) return null;
 
   const citiesToExcludeByNameAndCountry = new Set<string>();
@@ -25,8 +44,6 @@ export function getRandomCity(
   }
   
   if (availableCities.length === 0) {
-    // This means all cities in CITIES are in the exclusion sets.
-    // Signal that no city could be selected according to exclusion criteria.
     return null; 
   }
   
@@ -34,8 +51,13 @@ export function getRandomCity(
   return availableCities[randomIndex];
 }
 
-export function getCityOptions(correctCity: City, count: number): City[] {
+export async function getCityOptions(correctCity: City, count: number): Promise<City[]> { // 返り値が Promise になります
+  
+  // ★ここでデータを待機
+  const CITIES = await loadCities();
+
   const otherCities = CITIES.filter(c => c.name !== correctCity.name || c.country !== correctCity.country);
+  // shuffleArray は同期関数のままで大丈夫です
   const shuffledOtherCities = shuffleArray(otherCities);
   const options = [correctCity, ...shuffledOtherCities.slice(0, count - 1)];
   return shuffleArray(options);
