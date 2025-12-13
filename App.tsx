@@ -1,18 +1,22 @@
-
-import React, { useState, useEffect, useCallback,lazy, Suspense } from 'react';
-import { City, GameMode, GameState, MonthlyClimateData, QuizQuestion, UserPinGuess, ChallengeAnswerResult } from './types';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
+// 型定義は import type を使用（バンドルサイズには影響しません）
+import type { City, MonthlyClimateData, QuizQuestion, UserPinGuess, ChallengeAnswerResult } from './types';
+// Enumは初期化で使うため、静的インポートのままにする必要があります
+import { GameMode, GameState } from './types';
+// 定数もサイズが小さいため通常は静的インポートでOKですが、必要なら動的にできます（今回は静的のまま推奨）
 import { NUMBER_OF_CHOICES, NUMBER_OF_QUESTIONS_IN_CHALLENGE } from './constants';
-import { fetchClimateData } from './services/climateService';
-import { getRandomCity, getCityOptions } from './services/cityService';
-import { computeClimateSimilarity } from './utils/helpers';
+
+// --- ここにあった services, utils の静的インポートを削除 ---
 
 import LoadingSpinner from './components/LoadingSpinner';
-import GameModeSelectorView from './components/GameModeSelectorView';
-import QuizView from './components/QuizView';
-import ResultView from './components/ResultView';
-import ChallengeSummaryView from './components/ChallengeSummaryView'; // New component
 import Button from './components/Button';
 import "./index.css";
+
+// コンポーネントのLazy Load
+const GameModeSelectorView = lazy(() => import('./components/GameModeSelectorView'));
+const QuizView = lazy(() => import('./components/QuizView'));
+const ResultView = lazy(() => import('./components/ResultView'));
+const ChallengeSummaryView = lazy(() => import('./components/ChallengeSummaryView'));
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.SELECT_MODE);
@@ -21,7 +25,7 @@ const App: React.FC = () => {
   const [userPinGuess, setUserPinGuess] = useState<UserPinGuess | null>(null);
   const [userGuessedCity, setUserGuessedCity] = useState<City | null>(null);
   const [userGuessedClimateData, setUserGuessedClimateData] = useState<MonthlyClimateData | null>(null);
-  const [score, setScore] = useState<number>(0); // Score for the current question
+  const [score, setScore] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +41,7 @@ const App: React.FC = () => {
     setChallengeTotalScore(0);
   };
 
+  // ★ 変更点1: 関数内で動的にモジュールをインポートする
   const loadNewQuestion = useCallback(async (mode: GameMode) => {
     setIsLoading(true);
     setError(null);
@@ -44,71 +49,74 @@ const App: React.FC = () => {
     setUserGuessedCity(null);
     setUserGuessedClimateData(null);
     
-    let cityToExclude: City | undefined = undefined;
-    if (mode === GameMode.CHALLENGE && challengeResultsList.length > 0) {
-        // Exclude cities already used in the current challenge
-        // This is a simplified exclusion, could be more robust
-        cityToExclude = challengeResultsList[challengeResultsList.length -1].targetCity;
-    } else if (mode !== GameMode.CHALLENGE) {
-        cityToExclude = currentQuestion?.targetCity;
-    }
+    try {
+      // ここで必要な関数だけを動的インポート
+      const { fetchClimateData } = await import('./services/climateService');
+      const { getRandomCity, getCityOptions } = await import('./services/cityService');
 
-
-    const MAX_ATTEMPTS = 5; // Increased attempts for challenge mode diversity
-    let attempts = 0;
-    let questionLoaded = false;
-    const failedCitiesThisAttempt: City[] = [];
-    // For challenge mode, also exclude cities already shown in this challenge run.
-    const challengeAttemptExclusions = mode === GameMode.CHALLENGE ? challengeResultsList.map(r => r.targetCity) : [];
-
-
-    while (!questionLoaded && attempts < MAX_ATTEMPTS) {
-      attempts++;
-      const cityToTry = getRandomCity(cityToExclude, [...failedCitiesThisAttempt, ...challengeAttemptExclusions]);
-
-      if (!cityToTry) {
-        console.warn(`Attempt ${attempts}: Failed to get a new city to try.`);
-        break; 
+      let cityToExclude: City | undefined = undefined;
+      if (mode === GameMode.CHALLENGE && challengeResultsList.length > 0) {
+          cityToExclude = challengeResultsList[challengeResultsList.length -1].targetCity;
+      } else if (mode !== GameMode.CHALLENGE) {
+          cityToExclude = currentQuestion?.targetCity;
       }
-      
-      const targetClimateData = await fetchClimateData(cityToTry.latitude, cityToTry.longitude);
 
-      if (targetClimateData) {
-        let options: City[] | undefined;
-        if (mode === GameMode.CHOICE) { // Only for CHOICE mode, not CHALLENGE
-          options = getCityOptions(cityToTry, NUMBER_OF_CHOICES);
+      const MAX_ATTEMPTS = 5;
+      let attempts = 0;
+      let questionLoaded = false;
+      const failedCitiesThisAttempt: City[] = [];
+      const challengeAttemptExclusions = mode === GameMode.CHALLENGE ? challengeResultsList.map(r => r.targetCity) : [];
+
+      while (!questionLoaded && attempts < MAX_ATTEMPTS) {
+        attempts++;
+        const cityToTry = getRandomCity(cityToExclude, [...failedCitiesThisAttempt, ...challengeAttemptExclusions]);
+
+        if (!cityToTry) {
+          console.warn(`Attempt ${attempts}: Failed to get a new city to try.`);
+          break; 
         }
-        setCurrentQuestion({ targetCity: cityToTry, targetClimateData, options });
-        setGameMode(mode); // Set gameMode here after successful load
-        setGameState(GameState.QUIZ);
-        if (mode === GameMode.CHALLENGE) {
-          setCurrentChallengeQuestionNumber(prev => prev + 1);
+        
+        const targetClimateData = await fetchClimateData(cityToTry.latitude, cityToTry.longitude);
+
+        if (targetClimateData) {
+          let options: City[] | undefined;
+          if (mode === GameMode.CHOICE) {
+            options = getCityOptions(cityToTry, NUMBER_OF_CHOICES);
+          }
+          setCurrentQuestion({ targetCity: cityToTry, targetClimateData, options });
+          setGameMode(mode);
+          setGameState(GameState.QUIZ);
+          if (mode === GameMode.CHALLENGE) {
+            setCurrentChallengeQuestionNumber(prev => prev + 1);
+          }
+          questionLoaded = true;
+        } else {
+          console.warn(`Attempt ${attempts}: Failed to load climate data for ${cityToTry.name}. Retrying with another city.`);
+          failedCitiesThisAttempt.push(cityToTry);
         }
-        questionLoaded = true;
-      } else {
-        console.warn(`Attempt ${attempts}: Failed to load climate data for ${cityToTry.name}. Retrying with another city.`);
-        failedCitiesThisAttempt.push(cityToTry);
       }
-    }
 
-    if (!questionLoaded) {
-      console.error("Failed to load a question after multiple attempts.");
-      setError("Could not load climate data for a city after multiple attempts. Please try again later.");
-      setGameState(GameState.SELECT_MODE); 
-      resetChallengeState();
+      if (!questionLoaded) {
+        console.error("Failed to load a question after multiple attempts.");
+        setError("Could not load climate data for a city after multiple attempts. Please try again later.");
+        setGameState(GameState.SELECT_MODE); 
+        resetChallengeState();
+      }
+    } catch (err) {
+      console.error("Failed to load resources", err);
+      setError("Failed to load game resources.");
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   }, [currentQuestion?.targetCity, challengeResultsList]);
 
   const handleModeSelect = (mode: GameMode) => {
-    setGameMode(mode); // Set game mode immediately
+    setGameMode(mode);
     if (mode === GameMode.CHALLENGE) {
       resetChallengeState();
-      // setCurrentChallengeQuestionNumber(1); // loadNewQuestion will increment this to 1
       loadNewQuestion(mode);
     } else {
-      resetChallengeState(); // Ensure challenge state is clear if switching to other modes
+      resetChallengeState();
       loadNewQuestion(mode);
     }
   };
@@ -117,7 +125,7 @@ const App: React.FC = () => {
     calculatedScore: number, 
     guessedClimateData: MonthlyClimateData | null
   ) => {
-    setScore(calculatedScore); // This is current question's score
+    setScore(calculatedScore);
     setUserGuessedClimateData(guessedClimateData);
     
     if (gameMode === GameMode.CHALLENGE && currentQuestion) {
@@ -125,7 +133,7 @@ const App: React.FC = () => {
         questionNumber: currentChallengeQuestionNumber,
         targetCity: currentQuestion.targetCity,
         score: calculatedScore,
-        userPinGuess: userPinGuess || undefined, // Store user's pin for this question
+        userPinGuess: userPinGuess || undefined,
       };
       setChallengeResultsList(prev => [...prev, result]);
       setChallengeTotalScore(prev => prev + calculatedScore);
@@ -134,34 +142,54 @@ const App: React.FC = () => {
     setIsSubmitting(false);
   }, [gameMode, currentQuestion, currentChallengeQuestionNumber, userPinGuess]);
 
+  // ★ 変更点2: 回答時のロジックも動的インポート
   const handlePinGuess = async (guess: UserPinGuess) => {
     if (!currentQuestion || !currentQuestion.targetClimateData) return;
     setIsSubmitting(true);
-    setUserPinGuess(guess); // Set this early so it's available in processAndShowResult
-    const guessedClimateData = await fetchClimateData(guess.latitude, guess.longitude);
-    const calculatedScore = computeClimateSimilarity(
-        currentQuestion.targetClimateData, 
-        guessedClimateData || { temperature: Array(12).fill(0), precipitation: Array(12).fill(0) }
-    );
-    processAndShowResult(calculatedScore, guessedClimateData);
+    setUserPinGuess(guess);
+
+    try {
+      // 必要なヘルパーとサービスをここでインポート
+      const { fetchClimateData } = await import('./services/climateService');
+      const { computeClimateSimilarity } = await import('./utils/helpers');
+
+      const guessedClimateData = await fetchClimateData(guess.latitude, guess.longitude);
+      const calculatedScore = computeClimateSimilarity(
+          currentQuestion.targetClimateData, 
+          guessedClimateData || { temperature: Array(12).fill(0), precipitation: Array(12).fill(0) }
+      );
+      processAndShowResult(calculatedScore, guessedClimateData);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+    }
   };
 
+  // ★ 変更点3: Choice回答時のロジックも動的インポート
   const handleChoiceGuess = async (city: City) => {
     if (!currentQuestion || !currentQuestion.targetClimateData) return;
     setIsSubmitting(true);
     setUserGuessedCity(city);
     
-    const guessedClimateData = await fetchClimateData(city.latitude, city.longitude);
-    let calculatedScore = 0;
-    if (city.name === currentQuestion.targetCity.name && city.country === currentQuestion.targetCity.country) {
-      calculatedScore = 100;
-    } else {
-      calculatedScore = computeClimateSimilarity(
-          currentQuestion.targetClimateData, 
-          guessedClimateData || { temperature: Array(12).fill(0), precipitation: Array(12).fill(0) }
-      );
+    try {
+        const { fetchClimateData } = await import('./services/climateService');
+        const { computeClimateSimilarity } = await import('./utils/helpers');
+
+        const guessedClimateData = await fetchClimateData(city.latitude, city.longitude);
+        let calculatedScore = 0;
+        if (city.name === currentQuestion.targetCity.name && city.country === currentQuestion.targetCity.country) {
+          calculatedScore = 100;
+        } else {
+          calculatedScore = computeClimateSimilarity(
+              currentQuestion.targetClimateData, 
+              guessedClimateData || { temperature: Array(12).fill(0), precipitation: Array(12).fill(0) }
+          );
+        }
+        processAndShowResult(calculatedScore, guessedClimateData);
+    } catch (err) {
+        console.error(err);
+        setIsSubmitting(false);
     }
-    processAndShowResult(calculatedScore, guessedClimateData);
   };
 
   const handleNextQuestion = () => {
@@ -171,7 +199,7 @@ const App: React.FC = () => {
       } else {
         setGameState(GameState.CHALLENGE_SUMMARY);
       }
-    } else { // For PIN or CHOICE mode
+    } else {
       setGameState(GameState.SELECT_MODE); 
     }
   };
@@ -211,7 +239,7 @@ const App: React.FC = () => {
                     totalChallengeQuestions={gameMode === GameMode.CHALLENGE ? NUMBER_OF_QUESTIONS_IN_CHALLENGE : undefined}
                  />;
         }
-        return <div className="flex justify-center items-center h-screen"><LoadingSpinner /></div>; // Fallback if question not ready
+        return <div className="flex justify-center items-center h-screen"><LoadingSpinner /></div>;
       case GameState.RESULT:
         if (currentQuestion && gameMode) {
           const isIntermediate = gameMode === GameMode.CHALLENGE && currentChallengeQuestionNumber < NUMBER_OF_QUESTIONS_IN_CHALLENGE;
@@ -253,7 +281,9 @@ const App: React.FC = () => {
         </h1></a>
       </header>
       <main className="w-full max-w-5xl mx-auto">
-        {renderContent()}
+        <Suspense fallback={<div className="flex justify-center items-center h-64"><LoadingSpinner /></div>}>
+          {renderContent()}
+        </Suspense>
       </main>
       <footer className="w-full max-w-5xl mx-auto mt-12 text-center text-gray-500 text-sm pb-4">
         <p>&copy; {new Date().getFullYear()} Climograph Guesser. Powered by Open-Meteo.</p>
