@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,lazy, Suspense } from 'react';
 import { City, GameMode, GameState, MonthlyClimateData, QuizQuestion, UserPinGuess, ChallengeAnswerResult } from './types';
 import { NUMBER_OF_CHOICES, NUMBER_OF_QUESTIONS_IN_CHALLENGE } from './constants';
 import { fetchClimateData } from './services/climateService';
