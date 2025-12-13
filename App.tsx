@@ -69,7 +69,7 @@ const App: React.FC = () => {
 
       while (!questionLoaded && attempts < MAX_ATTEMPTS) {
         attempts++;
-        const cityToTry = getRandomCity(cityToExclude, [...failedCitiesThisAttempt, ...challengeAttemptExclusions]);
+        const cityToTry = await getRandomCity(cityToExclude, [...failedCitiesThisAttempt, ...challengeAttemptExclusions]);
 
         if (!cityToTry) {
           console.warn(`Attempt ${attempts}: Failed to get a new city to try.`);
@@ -81,7 +81,7 @@ const App: React.FC = () => {
         if (targetClimateData) {
           let options: City[] | undefined;
           if (mode === GameMode.CHOICE) {
-            options = getCityOptions(cityToTry, NUMBER_OF_CHOICES);
+            options = await getCityOptions(cityToTry, NUMBER_OF_CHOICES);
           }
           setCurrentQuestion({ targetCity: cityToTry, targetClimateData, options });
           setGameMode(mode);
