@@ -1,1 +1,1 @@
-Link:[Climograph Guesser](https://climograph-guesser.pages.dev/)
+Link:[Climograph Guesser](https://climo.statplay.site/)
