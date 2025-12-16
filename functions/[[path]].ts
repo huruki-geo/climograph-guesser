@@ -1,14 +1,12 @@
-import { renderToString } from 'react-dom/server';
-import React from 'react';
+// Cloudflare Pages Functions
+// このファイルはTypeScriptで書かれており、自動的にトランスパイルされます
 
 interface Env {
-  ASSETS: {
-    fetch: (request: Request) => Promise<Response>;
-  };
+  ASSETS: Fetcher;
 }
 
-export const onRequest: PagesFunction<Env> = async (context) => {
-  const { request, env, next } = context;
+export async function onRequest(context: EventContext<Env, any, any>): Promise<Response> {
+  const { request, env } = context;
   const url = new URL(request.url);
 
   // 静的アセット(CSS, JS, 画像など)はそのまま返す
@@ -22,8 +20,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     url.pathname.endsWith('.ico') ||
     url.pathname.endsWith('.xml') ||
     url.pathname.endsWith('.txt') ||
+    url.pathname.endsWith('.woff') ||
+    url.pathname.endsWith('.woff2') ||
     url.pathname === '/sitemap.xml' ||
-    url.pathname === '/robots.txt'
+    url.pathname === '/robots.txt' ||
+    url.pathname === '/favicon.png'
   ) {
     return env.ASSETS.fetch(request);
   }
@@ -34,13 +35,23 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       const aboutResponse = await env.ASSETS.fetch(
         new Request(new URL('/about.html', url.origin))
       );
-      return aboutResponse;
+      
+      if (aboutResponse.ok) {
+        return new Response(aboutResponse.body, {
+          status: aboutResponse.status,
+          headers: {
+            ...Object.fromEntries(aboutResponse.headers),
+            'Content-Type': 'text/html;charset=UTF-8',
+            'Cache-Control': 'public, max-age=3600',
+          },
+        });
+      }
     } catch (e) {
       console.error('Error serving about page:', e);
     }
   }
 
-  // APIリクエストの処理(気候データなど)
+  // APIリクエストの処理
   if (url.pathname.startsWith('/api/')) {
     return handleApiRequest(request);
   }
@@ -52,7 +63,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     );
     
     if (!response.ok) {
-      return new Response('Not Found', { status: 404 });
+      return new Response('Not Found', { 
+        status: 404,
+        headers: { 'Content-Type': 'text/html;charset=UTF-8' }
+      });
     }
 
     let html = await response.text();
@@ -60,30 +74,37 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // メタタグを動的に設定
     const metaTags = generateMetaTags(url.pathname);
     html = html.replace(
-      '<head>',
+      /<head>/i,
       `<head>${metaTags}`
     );
 
     // Structured Dataを追加
     const structuredData = generateStructuredData(url);
     html = html.replace(
-      '</head>',
+      /<\/head>/i,
       `${structuredData}</head>`
     );
 
     return new Response(html, {
+      status: 200,
       headers: {
         'Content-Type': 'text/html;charset=UTF-8',
         'Cache-Control': 'public, max-age=3600',
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
       },
     });
   } catch (error) {
     console.error('SSR Error:', error);
-    return new Response('Internal Server Error', { status: 500 });
+    return new Response('Internal Server Error', { 
+      status: 500,
+      headers: { 'Content-Type': 'text/plain' }
+    });
   }
-};
+}
 
-// メタタグ生成
+// メタタグ生成関数
 function generateMetaTags(pathname: string): string {
   const baseUrl = 'https://climo.statplay.site';
   
@@ -115,41 +136,43 @@ function generateMetaTags(pathname: string): string {
   `;
 }
 
-// Structured Data生成
+// Structured Data生成関数
 function generateStructuredData(url: URL): string {
   const baseUrl = 'https://climo.statplay.site';
   
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}${url.pathname}#webpage`,
+        "name": "Climograph Guesser | Geography quiz to protect the world's climate",
+        "description": "A free, quantitative geography quiz that uses monthly climate data to challenge users.",
+        "url": `${baseUrl}${url.pathname}`,
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Quiz",
+        "@id": `${baseUrl}${url.pathname}#quiz`,
+        "name": "Climograph Guesser",
+        "description": "A geography quiz where users guess the world region based on its climograph",
+        "educationalLevel": "Secondary School or Higher Education"
+      }
+    ]
+  };
+  
   return `
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          "@id": "${baseUrl}${url.pathname}#webpage",
-          "name": "Climograph Guesser | Geography quiz to protect the world's climate",
-          "description": "A free, quantitative geography quiz that uses monthly climate data (temperature and precipitation) to challenge users to locate global cities.",
-          "url": "${baseUrl}${url.pathname}",
-          "inLanguage": "en"
-        },
-        {
-          "@type": "Quiz",
-          "@id": "${baseUrl}${url.pathname}#quiz",
-          "name": "Climograph Guesser",
-          "description": "A geography quiz where users guess the world region based on its climograph",
-          "educationalLevel": "Secondary School or Higher Education"
-        }
-      ]
-    }
+    ${JSON.stringify(structuredData, null, 2)}
     </script>
   `;
 }
 
-// APIリクエストのハンドリング
+// APIリクエストハンドラー
 async function handleApiRequest(request: Request): Promise<Response> {
   const url = new URL(request.url);
   
-  // 気候データAPIの例
+  // 気候データAPIプロキシ
   if (url.pathname === '/api/climate') {
     const lat = url.searchParams.get('lat');
     const lon = url.searchParams.get('lon');
@@ -162,7 +185,6 @@ async function handleApiRequest(request: Request): Promise<Response> {
     }
 
     try {
-      // Open-Meteo APIへのプロキシ
       const climateUrl = new URL('https://archive-api.open-meteo.com/v1/archive');
       const currentYear = new Date().getFullYear();
       const targetYear = currentYear - 1;
@@ -177,22 +199,38 @@ async function handleApiRequest(request: Request): Promise<Response> {
       climateUrl.searchParams.set('timezone', 'GMT');
 
       const response = await fetch(climateUrl.toString());
+      
+      if (!response.ok) {
+        throw new Error(`Open-Meteo API error: ${response.status}`);
+      }
+      
       const data = await response.json();
 
       return new Response(JSON.stringify(data), {
+        status: 200,
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=86400',
+          'Access-Control-Allow-Origin': '*',
         },
       });
     } catch (error) {
       console.error('Climate API Error:', error);
-      return new Response(JSON.stringify({ error: 'Failed to fetch climate data' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to fetch climate data',
+          message: error instanceof Error ? error.message : 'Unknown error'
+        }), 
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
   }
 
-  return new Response('Not Found', { status: 404 });
+  return new Response('Not Found', { 
+    status: 404,
+    headers: { 'Content-Type': 'text/plain' }
+  });
 }
