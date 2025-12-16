@@ -1,0 +1,6 @@
+# Redirect /about.html to /about
+/about.html /about 301
+
+# SPA fallback - すべてのルートをindex.htmlにフォールバック
+# ただし、静的ファイルは除外
+/* /index.html 200

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/workers-types"],
+    "noEmit": false,
+    "jsx": "react"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
