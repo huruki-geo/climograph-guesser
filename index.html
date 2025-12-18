@@ -94,65 +94,46 @@
         border-radius: 8px;
       }
     </style>
-    <script type="application/ld+json">
+   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebPage",
       "@id": "https://climo.statplay.site/#webpage",
-      "name": "Climograph Guesser | Geography quiz to protect the world's climate",
-      "description": "A free, quantitative geography quiz that uses monthly climate data (temperature and precipitation) to challenge users to locate global cities, suitable for geography and climatology students.",
-      "educationalLevel": "University Level Geography and Climatology",
+      "url": "https://climo.statplay.site/",
+      "name": "Climograph Guesser | Geography Quiz Based on Climate Data",
+      "description": "Climograph Guesser is an educational geography quiz where users analyze temperature and precipitation climographs to identify global locations using quantitative climate similarity.",
       "inLanguage": "en",
-      "keywords": ["Climograph", "Geography Quiz", "Climate Classification", "Köppen System", "Climate Data"]
+      "isAccessibleForFree": true
     },
     {
-      "@type": "Quiz",
-      "@id": "https://climo.statplay.site/#quiz",
-      "mainEntityOfPage": {
-        "@id": "https://climo.statplay.site/#webpage"
-      },
-      "name": "Climograph Guesser: Geography Quiz to Protect the World's Climate",
-      "description": "A geography quiz where users guess the world region based on its climograph (rain and temperature chart). Scoring is based on climate similarity using cosine similarity of temperature and precipitation vectors.",
-      "educationalLevel": "Secondary School or Higher Education",
-      "inLanguage": "en",
-      "hasPart": [
+      "@type": "FAQPage",
+      "@id": "https://climo.statplay.site/#faq",
+      "mainEntity": [
         {
           "@type": "Question",
-          "name": "Which world region corresponds to this climograph?",
-          "description": "Interpret the monthly patterns of temperature and precipitation shown in the climograph to determine the corresponding location on the map."
-        }
-      ]
-    },
-    {
-      "@type": "HowTo",
-      "@id": "https://climo.statplay.site/#howto",
-      "mainEntityOfPage": {
-        "@id": "https://climo.statplay.site/#webpage"
-      },
-      "name": "How to Play Climograph Guesser",
-      "description": "Learn the steps and scoring mechanism to master the Climograph Guesser geography quiz.",
-      "step": [
-        {
-          "@type": "HowToStep",
-          "name": "Analyze the Climograph",
-          "text": "Examine the red temperature line (left axis) and blue precipitation bars (right axis) for 12 months."
+          "name": "What is a climograph?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A climograph is a chart that shows the average monthly temperature and precipitation of a location over a long period, usually 30 years, helping to visualize its climate pattern."
+          }
         },
         {
-          "@type": "HowToStep",
-          "name": "Determine the Climate Type",
-          "text": "Identify the hemisphere (U-shape line for Southern, Bell-shape for Northern) and the type of climate (e.g., desert, tropical, Mediterranean)."
+          "@type": "Question",
+          "name": "How does Climograph Guesser scoring work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scores are calculated using cosine similarity between 12-month temperature and precipitation vectors of the guessed location and the target location, focusing on climate pattern similarity rather than absolute values."
+          }
         },
         {
-          "@type": "HowToStep",
-          "name": "Pin the Location",
-          "text": "Click on the world map to place your pin where you believe the climate corresponds. A closer match in climate data yields a higher score."
-        },
-        {
-          "@type": "HowToStep",
-          "name": "Understand the Scoring",
-          "text": "Your score is based on Cosine Similarity between the 12-dimensional temperature and precipitation vectors of your pinned location and the target location."
+          "@type": "Question",
+          "name": "Who is Climograph Guesser for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Climograph Guesser is designed for students, teachers, and geography enthusiasts who want to practice climate classification and data interpretation skills."
+          }
         }
       ]
     }
