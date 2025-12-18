@@ -9,31 +9,38 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
   const { request, env } = context;
   const url = new URL(request.url);
 
-  // 静的アセット(CSS, JS, 画像など)はそのまま返す
-  if (
-    url.pathname.startsWith('/assets/') ||
-    url.pathname.endsWith('.css') ||
-    url.pathname.endsWith('.js') ||
-    url.pathname.endsWith('.png') ||
-    url.pathname.endsWith('.jpg') ||
-    url.pathname.endsWith('.svg') ||
-    url.pathname.endsWith('.ico') ||
-    url.pathname.endsWith('.xml') ||
-    url.pathname.endsWith('.txt') ||
-    url.pathname.endsWith('.woff') ||
-    url.pathname.endsWith('.woff2') ||
-    url.pathname === '/sitemap.xml' ||
-    url.pathname === '/robots.txt' ||
-    url.pathname === '/favicon.png'
-  ) {
+  // 【重要】無限ループ防止策
+  // 内部的な fetch (env.ASSETS.fetch) からの再入力を検知して直接アセットを返す
+  if (request.headers.has('x-internal-fetch')) {
     return env.ASSETS.fetch(request);
   }
 
-  // /about ページの処理
+  // 1. 静的アセット(CSS, JS, 画像など)の直接返却
+  // 拡張子を持っている、または特定のディレクトリにある場合は、関数を通さずアセットを返す
+  const isStaticAsset = 
+    url.pathname.includes('.') || // 拡張子がある場合
+    url.pathname.startsWith('/assets/') ||
+    ['/sitemap.xml', '/robots.txt', '/favicon.png'].includes(url.pathname);
+
+  if (isStaticAsset) {
+    // 内部 fetch であることを示すヘッダーを付与
+    return env.ASSETS.fetch(new Request(request, {
+      headers: { ...Object.fromEntries(request.headers), 'x-internal-fetch': '1' }
+    }));
+  }
+
+  // 2. APIリクエストの処理 (アセット取得より先に判定)
+  if (url.pathname.startsWith('/api/')) {
+    return handleApiRequest(request);
+  }
+
+  // 3. /about ページの処理 (HTMLの置換が不要な場合)
   if (url.pathname === '/about' || url.pathname === '/about.html') {
     try {
       const aboutResponse = await env.ASSETS.fetch(
-        new Request(new URL('/about.html', url.origin))
+        new Request(new URL('/about.html', url.origin), {
+          headers: { 'x-internal-fetch': '1' }
+        })
       );
       
       if (aboutResponse.ok) {
@@ -51,15 +58,13 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
     }
   }
 
-  // APIリクエストの処理
-  if (url.pathname.startsWith('/api/')) {
-    return handleApiRequest(request);
-  }
-
+  // 4. メインのSSR処理 (index.html を取得してメタタグを注入)
   try {
-    // index.htmlを取得
+    // index.htmlを取得（無限ループ回避のためヘッダーを付与）
     const response = await env.ASSETS.fetch(
-      new Request(new URL('/', url.origin))
+      new Request(new URL('/index.html', url.origin), {
+        headers: { 'x-internal-fetch': '1' }
+      })
     );
     
     if (!response.ok) {
@@ -71,19 +76,13 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
 
     let html = await response.text();
 
-    // メタタグを動的に設定
+    // メタタグと構造化データの注入
     const metaTags = generateMetaTags(url.pathname);
-    html = html.replace(
-      /<head>/i,
-      `<head>${metaTags}`
-    );
-
-    // Structured Dataを追加
     const structuredData = generateStructuredData(url);
-    html = html.replace(
-      /<\/head>/i,
-      `${structuredData}</head>`
-    );
+    
+    html = html
+      .replace(/<head>/i, `<head>${metaTags}`)
+      .replace(/<\/head>/i, `${structuredData}</head>`);
 
     return new Response(html, {
       status: 200,
@@ -104,6 +103,7 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
   }
 }
 
+// ... generateMetaTags, generateStructuredData, handleApiRequest は変更なし ...
 // メタタグ生成関数
 function generateMetaTags(pathname: string): string {
   const baseUrl = 'https://climo.statplay.site';
