@@ -109,30 +109,29 @@
     },
     {
       "@type": "FAQPage",
-      "@id": "https://climo.statplay.site/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a climograph?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A climograph is a chart that shows the average monthly temperature and precipitation of a location over a long period, usually 30 years, helping to visualize its climate pattern."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does Climograph Guesser scoring work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Scores are calculated using cosine similarity between 12-month temperature and precipitation vectors of the guessed location and the target location, focusing on climate pattern similarity rather than absolute values."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Who is Climograph Guesser for?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Climograph Guesser is designed for students, teachers, and geography enthusiasts who want to practice climate classification and data interpretation skills."
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a climograph?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A climograph (also called a climatic diagram) is a chart that shows the average monthly temperature and precipitation of a specific location, typically based on data collected over a 30-year period. It is used to visualize long-term climate patterns rather than short-term weather."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Climograph Guesser scoring work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Climograph Guesser calculates scores by comparing the climate pattern of the guessed location with the target climograph using cosine similarity. Monthly temperature and precipitation data are treated as 12-dimensional vectors, and similarity is evaluated based on pattern alignment rather than absolute values."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is Climograph Guesser for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Climograph Guesser is designed for students, teachers, and geography enthusiasts who want to practice climate interpretation, climate classification, and data analysis skills in an interactive way."
           }
         }
       ]
@@ -290,7 +289,24 @@
         </tbody>
     </table>
 </section>
+<section class="info-section">
+  <h2>Frequently Asked Questions (FAQ)</h2>
 
+  <h3>What is a climograph?</h3>
+  <p>
+    A climograph (also called a climatic diagram) is a chart that shows the average monthly temperature and precipitation of a specific location, typically based on data collected over a 30-year period. It is used to visualize long-term climate patterns rather than short-term weather.
+  </p>
+
+  <h3>How does Climograph Guesser scoring work?</h3>
+  <p>
+    Climograph Guesser calculates scores by comparing the climate pattern of the guessed location with the target climograph using cosine similarity. Monthly temperature and precipitation data are treated as 12-dimensional vectors, and similarity is evaluated based on pattern alignment rather than absolute values.
+  </p>
+
+  <h3>Who is Climograph Guesser for?</h3>
+  <p>
+    Climograph Guesser is designed for students, teachers, and geography enthusiasts who want to practice climate interpretation, climate classification, and data analysis skills in an interactive way.
+  </p>
+</section
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
