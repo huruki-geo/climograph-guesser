@@ -42,7 +42,7 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
           headers: {
             ...Object.fromEntries(aboutResponse.headers),
             'Content-Type': 'text/html;charset=UTF-8',
-            'Cache-Control': 'public, max-age=3600',
+            "cache-control": "public, max-age=4800, s-maxage=86400",
           },
         });
       }
@@ -89,7 +89,7 @@ export async function onRequest(context: EventContext<Env, any, any>): Promise<R
       status: 200,
       headers: {
         'Content-Type': 'text/html;charset=UTF-8',
-        'Cache-Control': 'public, max-age=3600',
+        "cache-control": "public, max-age=4800, s-maxage=86400",
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'DENY',
         'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -210,7 +210,7 @@ async function handleApiRequest(request: Request): Promise<Response> {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=86400',
+          "cache-control": "public, max-age=4800, s-maxage=86400",
           'Access-Control-Allow-Origin': '*',
         },
       });
@@ -223,7 +223,7 @@ async function handleApiRequest(request: Request): Promise<Response> {
         }), 
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json' , "cache-control": "public, max-age=4800, s-maxage=86400"},
         }
       );
     }
@@ -231,6 +231,7 @@ async function handleApiRequest(request: Request): Promise<Response> {
 
   return new Response('Not Found', { 
     status: 404,
-    headers: { 'Content-Type': 'text/plain' }
+    headers: { 'Content-Type': 'text/plain', "cache-control": "public, max-age=4800, s-maxage=86400" }
+    
   });
 }
